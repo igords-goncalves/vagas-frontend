@@ -20,11 +20,11 @@ const Menu = () => {
     // TODO: Naveção aninhada
     //Aguardando retorno do Backend o type do usuário da rota used-looged
     //rota atualizada
-    const handleNavigation = () => {
+    const handleNavigation = (companyRoute: string, cadidateRoute: string) => {
         if (auth.user.companyName) {
-            navigate('/profile-settings');
+            navigate(companyRoute);
         } else {
-            navigate('/candidate-settings');
+            navigate(cadidateRoute);
         }
     };
 
@@ -37,7 +37,7 @@ const Menu = () => {
         <Container>
             <PopUp>
                 <MenuItems>
-                    <li onClick={handleNavigation}>
+                    <li onClick={() => handleNavigation('/profile-settings', '/candidate-settings')}>
                         <img src={ProfileIcon} alt="perfil" />
                         Meu perfil
                     </li>
@@ -70,7 +70,8 @@ const Menu = () => {
                         <>
                             <Border />
                             <div>
-                                <li>
+                                <li onClick={() => handleNavigation('/company-pass-alter', '')}>
+                                    {/* TODO: Insert candidate uptdate password route when ready */}
                                     <img
                                         src={PasswordIcon}
                                         alt="alterar senha"
