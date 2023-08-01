@@ -13,7 +13,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   /* ESTILOS GERAIS */
   body {
-    font-family: 'Inter', sans-serif;
+    font-family: Radio Canada;;
     font-size: 1rem /* 16px */;
     color: ${({ theme }) => theme.colors.black};
   }
