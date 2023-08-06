@@ -13,21 +13,32 @@ export const CompanyPassAlter: React.FC = () => {
                 <Title>Alterar Senha</Title>
                 <Row />
             </Main>
-            <Form style={{ gridTemplateColumns: '1fr', maxWidth: '30%'}}>
+            <Form style={{ gridTemplateColumns: '1fr', maxWidth: '30%' }}>
                 <InputWrapper>
                     <label htmlFor="">Senha atual</label>
-                    <input type="password" placeholder='Insira sua senha'/>
+                    <input type="password" placeholder="Insira sua senha" />
                 </InputWrapper>
                 <InputWrapper>
                     <label htmlFor="">Nova senha</label>
-                    <input type="password" placeholder='Insira sua senha'/>
+                    <input type="password" placeholder="Insira sua senha" />
                 </InputWrapper>
                 <InputWrapper>
                     <label htmlFor="">Cofirmar nova senha</label>
-                    <input type="password" placeholder='Confirme sua nova senha'/>
+                    <input
+                        type="password"
+                        placeholder="Confirme sua nova senha"
+                    />
                 </InputWrapper>
-                <div>
+                <div
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        gap: '24px',
+                        marginTop: '32px',
+                    }}
+                >
                     <Button type="submit">Alterar</Button>
+                    <Button background="outline">Cancelar</Button>
                 </div>
             </Form>
             <Position>
