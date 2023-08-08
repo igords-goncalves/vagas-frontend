@@ -21,13 +21,17 @@ import { Job } from '../@types/jobs';
 import NoJobsSelectedCard from '../components/NoJobSelectedCard';
 import QuickFilter from '../components/QuickFilter';
 import Header from '../components/Portal/Header';
+import { Footer } from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const CompanyApplications = () => {
     const [selectedJob, setSelectedJob] = useState<string | null>('');
     const [noJobSelected, setNoJobSelected] = useState(true);
     const [clickedJob, setClickedJob] = useState<any>([]);
     const [jobStatus, setJobStatus] = useState('');
+    const [applications, setApplications] = useState([]);
 
+    const navigate = useNavigate();
     const auth = useContext(AuthContext);
     const companyId = auth.user?.id;
     const api = useApi();
@@ -44,10 +48,17 @@ const CompanyApplications = () => {
 
     async function selecionaVaga(id: string | null) {
         setSelectedJob(id);
+        const response = await api.getJobById(id);
+
         const item: Job = data.jobs.filter((item: Job) => item.id === id);
+        setApplications(response.applications);
         setClickedJob(item);
         setNoJobSelected(false);
     }
+
+    const filteredJobs = (data?.jobs || []).filter(
+        (job: any) => job.status === jobStatus,
+    );
 
     const [JobClicked] = clickedJob;
 
@@ -62,12 +73,16 @@ const CompanyApplications = () => {
                             <QuickFilter
                                 options={[
                                     {
+                                        label: 'Todas',
+                                        value: 'ALL',
+                                    },
+                                    {
                                         label: 'Vagas Ativas',
-                                        value: 'REMOTE',
+                                        value: 'ACTIVE',
                                     },
                                     {
                                         label: 'Vagas encerradas',
-                                        value: 'HYBRID',
+                                        value: 'ARCHIVED',
                                     },
                                 ]}
                                 selectedValue={jobStatus}
@@ -77,7 +92,11 @@ const CompanyApplications = () => {
                                 placeholder="Status da vaga"
                             />
                         </QuickFilterContainer>
-                        {data?.jobs.map((job: any) => (
+                        {(
+                            (filteredJobs.length > 0
+                                ? filteredJobs
+                                : data?.jobs) || []
+                        ).map((job: any) => (
                             <JobCard
                                 key={job.id}
                                 id={job.id}
@@ -122,26 +141,22 @@ const CompanyApplications = () => {
                                 <Text>{JobClicked?.contractType}</Text>
                             </JobHeadText>
                             <ApplicantsList>
-                                <Applicant>Luís Filipe</Applicant>
-                                <Applicant>Lucas Eduardo</Applicant>
-                                <Applicant>Larissa Manoela</Applicant>
-                                <Applicant>Ana Magalhães</Applicant>
-                                <Applicant>Pedro Silva</Applicant>
-                                <Applicant>Laís Rocha</Applicant>
-                                <Applicant>Caio Souza</Applicant>
-                                <Applicant>Luís Filipe</Applicant>
-                                <Applicant>Lucas Eduardo</Applicant>
-                                <Applicant>Larissa Manoela</Applicant>
-                                <Applicant>Ana Magalhães</Applicant>
-                                <Applicant>Pedro Silva</Applicant>
-                                <Applicant>Laís Rocha</Applicant>
-                                <Applicant>Caio Souza</Applicant>
+                                {applications.length > 0 ? (
+                                    applications.map((candidate: any) => (
+                                        <Applicant onClick={() => navigate("/match-jobs")} key={candidate.id}>
+                                            {candidate?.user?.name}
+                                        </Applicant>
+                                    ))
+                                ) : (
+                                    <div>Não há candidatos.</div>
+                                )}
                             </ApplicantsList>
                         </ApplicantsContainer>
                     ) : (
                         <NoJobsSelectedCard />
                     )}
                 </ContentWrapper>
+                <Footer />
             </Container>
         </>
     );

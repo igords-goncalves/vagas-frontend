@@ -19,6 +19,8 @@ import { ProfileSettings } from '../pages/ProfileSettings';
 import { CandidateSettings } from '../pages/CandidateSettings';
 import CompanyApplications from '../pages/CompanyApplications';
 import { CompanyPassAlter } from '../pages/CompanyPassAlter';
+import JobsPanel from '../pages/JobsPanel';
+import MatchJobs from '../pages/MatchJobs';
 
 export const NavRoutes: React.FC = () => {
     return (
@@ -76,6 +78,32 @@ export const NavRoutes: React.FC = () => {
                 }
             />
 
+            <Route
+                path="applications"
+                element={
+                    <RequireAuth>
+                        <CompanyApplications />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="jobs-panel"
+                element={
+                    <RequireAuth>
+                        <JobsPanel />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="match-jobs"
+                element={
+                    <RequireAuth>
+                        <MatchJobs />
+                    </RequireAuth>
+                }
+            />
             {/*TODO: A pagina Layout já está com container definido
             e um rodapé, modificar isso, ou incluir os elementos acima
             sem esse estilo pré definido*/}

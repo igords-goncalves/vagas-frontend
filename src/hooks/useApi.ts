@@ -100,6 +100,16 @@ export const useApi = () => ({
         return res.data;
     },
 
+    updateCandidateProfile: async (formData: any) => {
+        const token = localStorage.getItem('authToken');
+        const headers = {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+        };
+        const res: any = await api.put('/user', formData, { headers });
+        return res.data;
+    },
+
     createJob: async (JobData: any) => {
         const token = localStorage.getItem('authToken');
         const headers = {
@@ -119,7 +129,7 @@ export const useApi = () => ({
         return res.data;
     },
 
-    getJobById: async (id: number) => {
+    getJobById: async (id: any) => {
         const url = `/job/${id}`;
         const res: any = await api.get(url);
         return res.data;
@@ -130,20 +140,57 @@ export const useApi = () => ({
         return res.data;
     },
 
+    deleteJob: async (id: string) => {
+        const res: any = await api.patch(`/job/${id}`)
+        return res.data;
+    },
+
     getJobsByCompany: async (id: string) => {
         const res: any = await api.get(`/job/all/${id}`);
         return res.data;
     },
 
-    searchJobs: async (keyword: string, page: number = 1) => {
+    searchJobs: async (keyword: string, page: number = 1, filters: any = {}) => {
         const url = `/job/search/${keyword}?order=ASC&page=${page}&take=10&orderByColumn=id`;
-        const res: any = await api.get(url);
+        const res: any = await api.post(url, filters);
         return res.data;
     },
 
     getUserCurriculum: async (token: string | null) => {
         const res: any = await api.get(`/curriculum`, {
             headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return res.data;
+    },
+
+    updateUserCurriculum: async (formData: any) => {
+        const token = localStorage.getItem('authToken');
+        const res: any = await api.post(`/curriculum/upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return res.data;
+    },
+
+    deleteUserCurriculum: async (key: string) => {
+        const token = localStorage.getItem('authToken');
+        const res: any = await api.delete(`/curriculum/${key}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        return res.data;
+    },
+
+    uploadFile: async (formData: any) => {
+        const token = localStorage.getItem('authToken');
+        const res: any = await api.post(`/upload`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -160,4 +207,5 @@ export const useApi = () => ({
         });
         return res;
     },
+
 });
